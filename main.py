@@ -32,7 +32,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login','register']
+    allowed_routes = ['login','signup']
     if request.endpoint not in allowed_routes and 'email' not in session:
         return redirect('/login')
 
@@ -76,8 +76,13 @@ def register():
     
     return render_template('signup.html')
 
-@app.route('/')
+@app.route('/logout')
+def logout():
+    del session['email']
+    return redirect ('/')
 
+
+@app.route('/')
 def index():
     return redirect('/blog')
 
@@ -111,6 +116,8 @@ def newpost():
             flash('Please provide both a blog title and content for your post!','error')
 
     return render_template('newpost.html')
+
+
 
 if __name__ == '__main__':
     app.run()

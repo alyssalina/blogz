@@ -14,6 +14,7 @@
         {% block content%}
         {% endblock %}
 
+
         <ul>
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% for category,message in messages %}
@@ -24,9 +25,17 @@
        
     </body>
 
-    </div>
+    </div> 
 
+    <div>
     <a href='/blog'>Read Blog Entries</a> or <a href='/newpost'>Create a New Post</a>
+    </div> 
+    <div>
+     <a href='/logout'>Log Out!</a>
+
+    </div>
+    
     <html>
+
 
     
