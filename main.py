@@ -52,6 +52,30 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/signup', methods = ['POST','GET'])
+def register():
+    if request.method =='POST':
+        email = request.form['email']
+        password = request.form['password']
+        verify = request.form['verify']
+
+        # TODO - validate user data
+
+        existing_user = User.query.filter_by(email=email).first()
+        if not existing_user:
+            new_user = User(email,password)
+            db.session.add(new_user)
+            db.session.commit()
+
+            session['email'] = email
+            
+            flash("Welcome to your blog!")
+            return redirect('/')
+        else:
+            flash ("Username already exists")
+    
+    return render_template('signup.html')
+
 @app.route('/')
 
 def index():
