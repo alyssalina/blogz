@@ -22,29 +22,30 @@ class Blogpost (db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True)
+    username = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(120))
     blogs = db.relationship('Blogpost', backref='owner')
 
-    def __init__(self, email, password):
-        self.email = email
+    def __init__(self, username, password):
+        self.username = username
         self.password = password
 
 @app.before_request
 def require_login():
+    #note to self, this is the function, not the /url
     allowed_routes = ['login','signup']
-    if request.endpoint not in allowed_routes and 'email' not in session:
+    if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
 @app.route('/login', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username=username).first()
 
         if user and user.password == password:
-            session['email'] = email
+            session['username'] = username
             flash("Welcome back!")
             return redirect('/')
         else:
@@ -53,24 +54,24 @@ def login():
     return render_template('login.html')
 
 @app.route('/signup', methods = ['POST','GET'])
-def register():
+def signup():
     if request.method =='POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
 
         # TODO - validate user data
 
-        existing_user = User.query.filter_by(email=email).first()
+        existing_user = User.query.filter_by(username=username).first()
         if not existing_user:
-            new_user = User(email,password)
+            new_user = User(username,password)
             db.session.add(new_user)
             db.session.commit()
 
-            session['email'] = email
+            session['username'] = username
             
             flash("Welcome to your blog!")
-            return redirect('/')
+            return redirect('/newpost')
         else:
             flash ("Username already exists")
     
@@ -78,7 +79,7 @@ def register():
 
 @app.route('/logout')
 def logout():
-    del session['email']
+    del session['username']
     return redirect ('/')
 
 
