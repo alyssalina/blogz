@@ -36,7 +36,24 @@ def require_login():
     if request.endpoint not in allowed_routes and 'email' not in session:
         return redirect('/login')
 
+@app.route('/login', methods=['POST','GET'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+
+        if user and user.password == password:
+            session['email'] = email
+            flash("Welcome back!")
+            return redirect('/')
+        else:
+            flash('User password incorrect or user does not exist','error')
+
+    return render_template('login.html')
+
 @app.route('/')
+
 def index():
     return redirect('/blog')
 
@@ -47,7 +64,8 @@ def blog():
         indi_blog = Blogpost.query.filter_by(id = indy_id).all()
         return render_template('individual_blog.html', indi_blog=indi_blog)
     else:
-        blogs = Blogpost.query.filter_by(owner=onwer).all()
+        #need to show only specific owners still
+        blogs = Blogpost.query.all()
         return render_template('blog.html', title="Blogz", blogs=blogs)
     
 @app.route('/newpost',methods=['POST','GET'])
