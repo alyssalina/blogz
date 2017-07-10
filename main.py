@@ -101,6 +101,8 @@ def blog():
 @app.route('/newpost',methods=['POST','GET'])
 def newpost():
 
+    owner = User.query.filter_by(username=session['username']).first()
+
     if request.method=='POST':
         blogtitle = request.form['blogtitle']
         blogpost = request.form['blogpost']
@@ -110,7 +112,7 @@ def newpost():
             db.session.add(new_blog)
             db.session.commit()
             indy_id = new_blog.id
-            indi_blog = Blogpost.query.filter_by(id = indy_id,owner=owner).all()
+            indi_blog = Blogpost.query.filter_by(id = indy_id).all()
 
             return render_template('individual_blog.html', indi_blog=indi_blog)
         else:
