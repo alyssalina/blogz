@@ -47,9 +47,11 @@ def login():
         if user and user.password == password:
             session['username'] = username
             flash("Welcome back!")
-            return redirect('/')
+            return redirect('/newpost')
+        elif user and user.password != password:
+            flash('Password is incorrect.','error')
         else:
-            flash('User password incorrect or user does not exist','error')
+            flash('User does not exist','error')
 
     return render_template('login.html')
 
@@ -60,20 +62,27 @@ def signup():
         password = request.form['password']
         verify = request.form['verify']
 
-        # TODO - validate user data
-
-        existing_user = User.query.filter_by(username=username).first()
-        if not existing_user:
-            new_user = User(username,password)
-            db.session.add(new_user)
-            db.session.commit()
-
-            session['username'] = username
-            
-            flash("Welcome to your blog!")
-            return redirect('/newpost')
+        if username == '' or password == '' or verify =='':
+            flash("One or more fields are invalid",'error')
+        elif password != verify:
+            flash("Password and verifcation do not match")
+        elif len(username)<3:
+            flash ("Invalid username. Username must be at least 3 characters")
+        elif len(password)<3:
+            flash ("Invalid password. Password must be at least 3 characters but more is better!")
         else:
-            flash ("Username already exists")
+            existing_user = User.query.filter_by(username=username).first()
+            if not existing_user:
+                new_user = User(username,password)
+                db.session.add(new_user)
+                db.session.commit()
+
+                session['username'] = username
+                
+                flash("Welcome to your blog!")
+                return redirect('/newpost')
+            else:
+                flash ("Username already exists")
     
     return render_template('signup.html')
 
