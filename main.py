@@ -94,7 +94,8 @@ def logout():
 
 @app.route('/')
 def index():
-    return redirect('/blog')
+    users = User.query.all()
+    return render_template('index.html', title="Blog Writers", users=users)
 
 @app.route('/blog', methods=['POST','GET'])
 def blog():
