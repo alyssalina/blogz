@@ -5,7 +5,7 @@
     
     {% for user in users %}
     
-    <h2>{{user.username}}</h2></a>
+    <h2><a href=./blog?user={{user.id}}>{{user.username}}</a></h2>
     </hr>
 
     {% endfor %}
@@ -14,3 +14,5 @@
 
     
  {% endblock %}
+
+

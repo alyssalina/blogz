@@ -2,8 +2,10 @@
 
 {% block content %}
     {% for blog in indi_blog %}
-    <h1>{{blog.blogtitle}}</h1>
+    <h2><a href=./blog?id={{blog.id}}>{{blog.blogtitle}}</a></h2>
     <p>{{blog.blogpost}}
+    <p><em> Written by <a href=./blog?user={{blog.owner.id}}>{{blog.owner.username}}</a></em>
+
     {% endfor %}
 
 

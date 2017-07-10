@@ -103,6 +103,10 @@ def blog():
         indy_id = request.args.get("id")
         indi_blog = Blogpost.query.filter_by(id = indy_id).all()
         return render_template('individual_blog.html', indi_blog=indi_blog)
+    elif request.args.get("user"):
+        indi_user = request.args.get("user")
+        indi_posts = Blogpost.query.filter_by(owner_id = indi_user).all()
+        return render_template('individual_user.html', indi_posts=indi_posts)
     else:
         #need to show only specific owners still
         blogs = Blogpost.query.all()
@@ -122,7 +126,7 @@ def newpost():
             db.session.add(new_blog)
             db.session.commit()
             indy_id = new_blog.id
-            indi_blog = Blogpost.query.filter_by(id = indy_id).all()
+            indi_blog = Blogpost.query.filter_by(owner = indy_id).all()
 
             return render_template('individual_blog.html', indi_blog=indi_blog)
         else:
