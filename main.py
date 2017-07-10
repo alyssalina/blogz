@@ -33,7 +33,7 @@ class User(db.Model):
 @app.before_request
 def require_login():
     #note to self, this is the function, not the /url
-    allowed_routes = ['login','signup']
+    allowed_routes = ['login','signup','blog']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -89,7 +89,7 @@ def signup():
 @app.route('/logout')
 def logout():
     del session['username']
-    return redirect ('/')
+    return redirect ('/blog')
 
 
 @app.route('/')
