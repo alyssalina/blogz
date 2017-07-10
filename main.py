@@ -33,7 +33,7 @@ class User(db.Model):
 @app.before_request
 def require_login():
     #note to self, this is the function, not the /url
-    allowed_routes = ['login','signup','blog']
+    allowed_routes = ['login','signup','blog','index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -126,7 +126,7 @@ def newpost():
             db.session.add(new_blog)
             db.session.commit()
             indy_id = new_blog.id
-            indi_blog = Blogpost.query.filter_by(owner = indy_id).all()
+            indi_blog = Blogpost.query.filter_by(id = indy_id).all()
 
             return render_template('individual_blog.html', indi_blog=indi_blog)
         else:
