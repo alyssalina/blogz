@@ -9,7 +9,7 @@
             </style>
     </head>
     <div>
-        <a href='/blog'>Read All Blog Entries</a> | <a href='/newpost'>Create a New Post</a> | <a href='/login'>Log In</a> | <a href='/logout'>Log Out</a>
+        <a href='/blog'>Read All Blog Entries</a> | <a href='/newpost'>Create a New Post</a> | <a href='/login'>Log In</a> {% if session['username'] %}| <a href='/logout'>Log Out</a>{% endif %}
         <p>
     </div>
     <body>
@@ -30,7 +30,7 @@
     </div> 
 
     <div>
-    <a href='/blog'>Read All Blog Entries</a> | <a href='/newpost'>Create a New Post</a> | <a href='/login'>Log In</a> | <a href='/logout'>Log Out</a>
+    <a href='/blog'>Read All Blog Entries</a> | <a href='/newpost'>Create a New Post</a> | <a href='/login'>Log In</a> {% if session['username'] %}| <a href='/logout'>Log Out</a>{% endif %}
     </div>
     
     </html>
